@@ -1,0 +1,14 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: Checkout@1
+
+  - script: echo "Running CI build..."
+    displayName: "Build Step"
+
+  - script: echo "Running tests..."
+    displayName: "Test Step"
