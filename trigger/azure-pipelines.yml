@@ -1,0 +1,32 @@
+# Starter  pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+      - main   # run pipeline on main branch
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  ARM_SUBSCRIPTION_ID: '<your-subscription-id>'
+  ARM_CLIENT_ID: '<service-principal-client-id>'
+  ARM_CLIENT_SECRET: '<service-principal-client-secret>'
+  ARM_TENANT_ID: '<tenant-id>'
+
+steps:
+- task: TerraformInstaller@0
+  inputs:
+    terraformVersion: '1.5.7'   # specify your Terraform version
+
+- script: |
+    terraform init
+    terraform plan -out=tfplan
+  displayName: 'Terraform Init and Plan'
+
+- script: |
+    terraform apply -auto-approve tfplan
+  displayName: 'Terraform Apply'
